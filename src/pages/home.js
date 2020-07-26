@@ -12,14 +12,13 @@ const Home = () => {
         "https://europe-west3-socialape-23b23.cloudfunctions.net/api/screams"
       )
       .then((res) => {
-        console.log(res.data);
         setScreams(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
   let recentScreamsMarkUp = screams ? (
-    screams.map((scream) => <Scream scream={scream} />)
+    screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
   ) : (
     <p>Loading...</p>
   );
