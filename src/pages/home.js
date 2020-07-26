@@ -1,11 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { Grid } from "@material-ui/core";
+import axios from "axios";
+import Scream from "../components/Scream";
 
-const home = () => {
-  return ( 
-    <div>
-      <h1>Home Page</h1>
-    </div>
-   );
-}
- 
-export default home;
+const Home = () => {
+  const [screams, setScreams] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://europe-west3-socialape-23b23.cloudfunctions.net/api/screams"
+      )
+      .then((res) => {
+        console.log(res.data);
+        setScreams(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  let recentScreamsMarkUp = screams ? (
+    screams.map((scream) => <Scream scream={scream} />)
+  ) : (
+    <p>Loading...</p>
+  );
+  return (
+    <Grid container spacing={4}>
+      <Grid item sm={8} xs={12}>
+        {recentScreamsMarkUp}
+      </Grid>
+      <Grid item sm={4} xs={12}>
+        <p>Profile...</p>
+      </Grid>
+    </Grid>
+  );
+};
+
+export default Home;
