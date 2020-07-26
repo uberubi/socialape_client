@@ -13,32 +13,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-const styles = {
-  form: {
-    textAlign: "center",
-  },
-  image: {
-    margin: "20px auto 20px auto",
-  },
-  pageTitle: {
-    margin: "10px auto 10px auto",
-  },
-  textField: {
-    margin: "10px auto 10px auto",
-  },
-  button: {
-    marginTop: 20,
-    position: "relative",
-  },
-  customError: {
-    color: "red",
-    fontSize: "0.8rem",
-    marginTop: "10px",
-  },
-  progress: {
-    position: 'absolute'
-  },
-};
+const styles = (theme) => ({...theme.spreadTheme})
 
 const Login = ({ classes, ...props }) => {
   const [userData, setLoginData] = useState({
@@ -60,6 +35,7 @@ const Login = ({ classes, ...props }) => {
       )
       .then((res) => {
         console.log(res.data);
+        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`)
         setLoading(false);
         props.history.push("/");
       })
