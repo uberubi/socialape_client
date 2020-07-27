@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import dayjs from "dayjs";
 // Redux
 import { connect } from "react-redux";
+import {logoutUser, uploadImage} from '../redux/actions/userActions' 
 // MUI stuff
 import {
   withStyles,
@@ -10,28 +11,53 @@ import {
   Paper,
   Link as MuiLink,
   Typography,
+  IconButton,
+  Tooltip,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 //Icons
 import LocationOn from "@material-ui/icons/LocationOn";
 import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
+import EditIcon from "@material-ui/icons/Edit";
 
 const Profile = ({
   classes,
   user: {
     credentials: { handle, createdAt, imageUrl, bio, website, location },
     loading,
-    authenticated
+    authenticated,
   },
   ...props
 }) => {
+  const handleImageChange = (e) => {
+    const image = e.target.files[0];
+    const formData = new FormData()
+    formData.append('image', image, image.name)
+    props.uploadImage(formData)
+  };
+  const handleEditPicture = () => {
+    const fileInput = document.getElementById("imageInput");
+    fileInput.click();
+  };
+
   let profileMarkup = !loading ? (
     authenticated ? (
       <Paper className={classes.paper}>
         <div className={classes.profile}>
           <div className="image-wrapper">
             <img src={imageUrl} alt="profile" className="profile-image" />
+            <input
+              type="file"
+              id="imageInput"
+              onChange={handleImageChange}
+              hidden="hidden"
+            />
+            <Tooltip title=" Edit profile picture" placement="top">
+              <IconButton onClick={handleEditPicture} className="button">
+                <EditIcon color="primary" />
+              </IconButton>
+            </Tooltip>
           </div>
           <hr />
           <div className="profile-details">
@@ -56,14 +82,14 @@ const Profile = ({
               <>
                 <LinkIcon color="primary" />
                 <a href={website} target="_blank" rel="noopener noreferrer">
-                  {' '}
+                  {" "}
                   {website}
                 </a>
                 <hr />
               </>
             )}
-            <CalendarToday color="primary" />{' '}
-            <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
+            <CalendarToday color="primary" />{" "}
+            <span>Joined {dayjs(createdAt).format("MMM YYYY")}</span>
           </div>
         </div>
       </Paper>
@@ -98,16 +124,9 @@ const Profile = ({
   return profileMarkup;
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
 
-Profile.propTypes = {
-  user: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-};
 
-const styles = theme => ({
+const styles = (theme) => ({
   paper: {
     padding: 20,
   },
@@ -153,6 +172,20 @@ const styles = theme => ({
       margin: "20px 10px",
     },
   },
-})
+});
 
-export default connect(mapStateToProps)(withStyles(styles)(Profile));
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+const mapActionToProps = {logoutUser, uploadImage}
+
+Profile.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  uploadImage: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+};
+
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Profile));
