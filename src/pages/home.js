@@ -15,7 +15,7 @@ const Home = () => {
         setScreams(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  },[]);
 
   let recentScreamsMarkUp = screams ? (
     screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
