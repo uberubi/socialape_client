@@ -1,4 +1,11 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_AUTHENTICATED } from "../types";
+import {
+  SET_USER,
+  SET_ERRORS,
+  CLEAR_ERRORS,
+  LOADING_UI,
+  SET_AUTHENTICATED,
+  LOADING_USER
+} from "../types";
 import axios from "axios";
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -9,7 +16,7 @@ export const loginUser = (userData, history) => (dispatch) => {
       userData
     )
     .then((res) => {
-      setAuthorizationHeader(res.data.token)
+      setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
       dispatch({ type: CLEAR_ERRORS });
       history.push("/");
@@ -30,7 +37,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
       newUserData
     )
     .then((res) => {
-      setAuthorizationHeader(res.data.token)
+      setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
       dispatch({ type: CLEAR_ERRORS });
       history.push("/");
@@ -44,6 +51,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
 };
 
 export const getUserData = () => (dispatch) => {
+  dispatch({ type: LOADING_USER})
   axios
     .get("https://europe-west3-socialape-23b23.cloudfunctions.net/api/user")
     .then((res) => {
@@ -56,13 +64,13 @@ export const getUserData = () => (dispatch) => {
 };
 
 export const logoutUser = () => (dispatch) => {
-  localStorage.removeItem('FBIdToken')
-  delete axios.defaults.headers.common['Authorization']
-  dispatch({type: SET_AUTHENTICATED})
-}
+  localStorage.removeItem("FBIdToken");
+  delete axios.defaults.headers.common["Authorization"];
+  dispatch({ type: SET_AUTHENTICATED });
+};
 
 const setAuthorizationHeader = (token) => {
   const FBIdToken = `Bearer ${token}`;
   localStorage.setItem("FBIdToken", FBIdToken);
   axios.defaults.headers.common["Authorization"] = FBIdToken;
-}
+};
