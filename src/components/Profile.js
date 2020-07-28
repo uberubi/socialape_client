@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import EditDetails from './EditDetails'
 // Redux
 import { connect } from "react-redux";
 import {logoutUser, uploadImage} from '../redux/actions/userActions' 
@@ -20,6 +21,7 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 import EditIcon from "@material-ui/icons/Edit";
+import KeyboardReturn from '@material-ui/icons/KeyboardReturn'
 
 const Profile = ({
   classes,
@@ -36,10 +38,15 @@ const Profile = ({
     formData.append('image', image, image.name)
     props.uploadImage(formData)
   };
+
   const handleEditPicture = () => {
     const fileInput = document.getElementById("imageInput");
     fileInput.click();
   };
+
+  const handleLogout = () => {
+    props.logoutUser()
+  }
 
   let profileMarkup = !loading ? (
     authenticated ? (
@@ -91,6 +98,12 @@ const Profile = ({
             <CalendarToday color="primary" />{" "}
             <span>Joined {dayjs(createdAt).format("MMM YYYY")}</span>
           </div>
+          <Tooltip title="Logout" placement="top">
+            <IconButton onClick={handleLogout} >
+              <KeyboardReturn color="primary" />
+            </IconButton>
+          </Tooltip>
+          <EditDetails />
         </div>
       </Paper>
     ) : (
