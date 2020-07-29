@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
@@ -20,20 +20,25 @@ import axios from "axios";
 
 const theme = createMuiTheme(themeObject);
 
-const token = localStorage.FBIdToken;
-if (token) {
-  const decodedToken = jwtDecode(token);
-  if (decodedToken.exp * 1000 < Date.now()) {
-    store.dispatch(logoutUser())
-    window.location.href = "/login";
-  } else {
-    store.dispatch({type: SET_AUTHENTICATED})
-    axios.defaults.headers.common['Authorization'] = token
-    store.dispatch(getUserData())
-  }
-}
-
 const App = () => {
+
+  const [token, setToken] = useState('')
+  useEffect(() => {
+    // const token = localStorage.FBIdToken;
+    setToken(localStorage.FBIdToken)
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        store.dispatch(logoutUser());
+        window.location.href = "/login";
+      } else {
+        store.dispatch({ type: SET_AUTHENTICATED });
+        axios.defaults.headers.common["Authorization"] = token;
+        store.dispatch(getUserData());
+      }
+    }
+  }, [token])
+
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
@@ -42,16 +47,8 @@ const App = () => {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Home} />
-              <AuthRoute
-                exact
-                path="/login"
-                component={Login}
-              />
-              <AuthRoute
-                exact
-                path="/signup"
-                component={Signup}
-              />
+              <AuthRoute exact path="/login" component={Login} />
+              <AuthRoute exact path="/signup" component={Signup} />
             </Switch>
           </div>
         </Router>

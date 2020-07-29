@@ -6,8 +6,6 @@ import { editUserDetails } from "../redux/actions/userActions";
 // MUI stuff
 import {
   withStyles,
-  Tooltip,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -15,14 +13,17 @@ import {
   DialogActions,
   Button,
 } from "@material-ui/core";
-import EditIcon  from "@material-ui/icons/Edit";
+import EditIcon from "@material-ui/icons/Edit";
+import MyButton from "../utils/myButton";
 
-const styles = (theme) => ({ ...theme.spreadTheme, button: {
-  float: 'right'
-} });
+const styles = (theme) => ({
+  ...theme.spreadTheme,
+  button: {
+    float: "right",
+  },
+});
 
 const EditDetails = ({ credentials, classes, ...props }) => {
-  
   const [userDetails, setUserDetails] = useState({
     bio: "",
     website: "",
@@ -52,7 +53,7 @@ const EditDetails = ({ credentials, classes, ...props }) => {
 
   const handleSubmit = () => {
     props.editUserDetails(userDetails);
-    handleClose()
+    handleClose();
   };
 
   const mapUserDetailsToState = (credentials) => {
@@ -65,11 +66,13 @@ const EditDetails = ({ credentials, classes, ...props }) => {
 
   return (
     <>
-      <Tooltip title="Edit details" placement="top">
-        <IconButton onClick={handleOpen} className={classes.button}>
-          <EditIcon color="primary" />
-        </IconButton>
-      </Tooltip>
+      <MyButton
+        tip="Edit details"
+        onClick={handleOpen}
+        btnClassName={classes.button}
+      >
+        <EditIcon color="primary" />
+      </MyButton>
       <Dialog open={open} onClose={handleClose} maxWidth="sm">
         <DialogTitle>Edit your details</DialogTitle>
         <DialogContent>

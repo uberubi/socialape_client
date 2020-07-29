@@ -18,6 +18,8 @@ const Home = () => {
       .catch((err) => console.log(err));
   },[]);
 
+  
+
   let recentScreamsMarkUp = screams ? (
     screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
   ) : (
