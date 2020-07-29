@@ -9,7 +9,6 @@ import {
   LIKE_SCREAM,
   UNLIKE_SCREAM,
 } from "../types";
-import axios from "axios";
 
 const initialState = {
   authenticated: false,

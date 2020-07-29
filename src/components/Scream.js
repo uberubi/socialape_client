@@ -16,25 +16,13 @@ import { connect } from "react-redux";
 import { likeScream, unlikeScream } from "../redux/actions/dataActions";
 import PropTypes from "prop-types";
 import MyButton from "../utils/myButton";
+import DeleteScream from './DeleteScream'
 
-const styles = {
-  card: {
-    display: "flex",
-    marginBottom: 20,
-  },
-  image: {
-    minWidth: 200,
-  },
-  content: {
-    padding: 25,
-    objectFit: "cover",
-  },
-};
 
 const Scream = ({
   classes,
   scream: { body, createdAt, userImage, userHandle, screamId, likeCount },
-  user: {likes, authenticated},
+  user: {likes, authenticated, credentials: {handle}},
   ...props
 }) => {
   const likedScream = () => {
@@ -71,6 +59,10 @@ const Scream = ({
     )
   )
 
+  const deleteButton = authenticated && userHandle === handle ? (
+    <DeleteScream screamId={screamId}/>
+  ) : null
+
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -87,21 +79,36 @@ const Scream = ({
         >
           {userHandle}
         </Typography>
+        {deleteButton}
         <Typography variant="body2" color="textSecondary">
           {dayjs(createdAt).fromNow()}
         </Typography>
         <Typography variant="body1">{body}</Typography>
         {likeButton}
         <span>{likeCount} Likes</span>
-        <MyButton typ="comments">
-          <ChatIcon color="primary">
-
-          </ChatIcon>
+        <MyButton tip="comments">
+          <ChatIcon color="primary" />
         </MyButton>
       </CardContent>
     </Card>
   );
 };
+
+const styles = {
+  card: {
+    position: 'relative',
+    display: "flex",
+    marginBottom: 20,
+  },
+  image: {
+    minWidth: 200,
+  },
+  content: {
+    padding: 25,
+    objectFit: "cover",
+  },
+};
+
 
 Scream.propTypes = {
   likeScream: PropTypes.func.isRequired,

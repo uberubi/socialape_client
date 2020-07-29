@@ -106,7 +106,7 @@ const Profile = ({
             <CalendarToday color="primary" />{" "}
             <span>Joined {dayjs(createdAt).format("MMM YYYY")}</span>
           </div>
-          <MyButton tip="Edit profile picture" onClick={handleLogout}>
+          <MyButton tip="Logout" onClick={handleLogout}>
             <KeyboardReturn color="primary" />
           </MyButton>
           <EditDetails />
