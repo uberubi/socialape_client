@@ -5,7 +5,9 @@ import {
   LOADING_UI,
   SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
-  LOADING_USER
+  LOADING_USER,
+  LIKE_SCREAM,
+  UNLIKE_SCREAM,
 } from "../types";
 import axios from "axios";
 
@@ -32,11 +34,29 @@ export default function (state = initialState, action) {
         loading: false,
         ...action.payload,
       };
-      case LOADING_USER:
+    case LOADING_USER:
       return {
         ...state,
-        loading: true
-      }
+        loading: true,
+      };
+    case LIKE_SCREAM:
+      return {
+        ...state,
+        likes: [
+          ...state.likes,
+          {
+            userHandle: state.credentials.handle,
+            screamId: action.payload.screamId,
+          },
+        ],
+      };
+    case UNLIKE_SCREAM:
+      return {
+        ...state,
+        likes: state.likes.filter(
+          (like) => like.screamId !== action.payload.screamId
+        ),
+      };
     default:
       return state;
   }
