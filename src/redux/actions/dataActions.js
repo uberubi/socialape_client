@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const getScreams = () => dispatch => {
   dispatch({type: LOADING_DATA})
-  axios.get('https://europe-west3-socialape-23b23.cloudfunctions.net/api/screams')
+  axios.get('/screams')
     .then(res => {
       dispatch({
         type: SET_SCREAMS,

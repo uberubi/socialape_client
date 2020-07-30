@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 //Redux stuff
 import { connect } from "react-redux";
-import { editUserDetails } from "../redux/actions/userActions";
+import { editUserDetails } from "../../redux/actions/userActions";
 // MUI stuff
 import {
   withStyles,
@@ -14,7 +14,7 @@ import {
   Button,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import MyButton from "../utils/myButton";
+import MyButton from "../../utils/myButton";
 
 const styles = (theme) => ({
   ...theme.spreadTheme,

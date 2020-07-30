@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import EditDetails from "./EditDetails";
 // Redux
 import { connect } from "react-redux";
-import { logoutUser, uploadImage } from "../redux/actions/userActions";
+import { logoutUser, uploadImage } from "../../redux/actions/userActions";
 // MUI stuff
 import {
   withStyles,
@@ -12,8 +12,6 @@ import {
   Paper,
   Link as MuiLink,
   Typography,
-  IconButton,
-  Tooltip,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 //Icons
@@ -22,7 +20,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 import EditIcon from "@material-ui/icons/Edit";
 import KeyboardReturn from "@material-ui/icons/KeyboardReturn";
-import MyButton from "../utils/myButton";
+import MyButton from "../../utils/myButton";
 
 const Profile = ({
   classes,

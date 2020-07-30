@@ -3,7 +3,6 @@ import {
   SET_ERRORS,
   CLEAR_ERRORS,
   LOADING_UI,
-  SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
   LOADING_USER
 } from "../types";
@@ -13,7 +12,7 @@ export const loginUser = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
     .post(
-      "https://europe-west3-socialape-23b23.cloudfunctions.net/api/login",
+      "/login",
       userData
     )
     .then((res) => {
@@ -34,7 +33,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
     .post(
-      "https://europe-west3-socialape-23b23.cloudfunctions.net/api/signup",
+      "/signup",
       newUserData
     )
     .then((res) => {
@@ -54,7 +53,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
 export const getUserData = () => (dispatch) => {
   dispatch({ type: LOADING_USER})
   axios
-    .get("https://europe-west3-socialape-23b23.cloudfunctions.net/api/user")
+    .get("/user")
     .then((res) => {
       dispatch({
         type: SET_USER,

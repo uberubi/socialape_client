@@ -12,8 +12,8 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import AddIcon from "@material-ui/icons/Add";
-import MyButton from "../utils/myButton";
-import { postScream, clearErrors } from "../redux/actions/dataActions";
+import MyButton from "../../utils/myButton";
+import { postScream, clearErrors } from "../../redux/actions/dataActions";
 import { connect } from "react-redux";
 
 const PostScream = ({ classes, UI, ...props }) => {
