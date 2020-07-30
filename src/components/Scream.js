@@ -17,11 +17,12 @@ import { likeScream, unlikeScream } from "../redux/actions/dataActions";
 import PropTypes from "prop-types";
 import MyButton from "../utils/myButton";
 import DeleteScream from './DeleteScream'
+import ScreamDialog from './ScreamDialog'
 
 
 const Scream = ({
   classes,
-  scream: { body, createdAt, userImage, userHandle, screamId, likeCount },
+  scream: { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount },
   user: {likes, authenticated, credentials: {handle}},
   ...props
 }) => {
@@ -89,6 +90,8 @@ const Scream = ({
         <MyButton tip="comments">
           <ChatIcon color="primary" />
         </MyButton>
+        <span>{commentCount} comments</span>
+        <ScreamDialog screamId={screamId} userHandle={userHandle} />
       </CardContent>
     </Card>
   );
