@@ -22,8 +22,6 @@ const styles = {
 const DeleteScream = ({ screamId, classes, ...props }) => {
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {}, [open])
-
   const handleOpen = () => {
     setOpen(true);
   };

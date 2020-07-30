@@ -3,7 +3,8 @@ const {
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   LOADING_DATA,
-  DELETE_SCREAM
+  DELETE_SCREAM,
+  POST_SCREAM,
 } = require("../types");
 
 const initialState = {
@@ -35,11 +36,18 @@ export default function (state = initialState, action) {
         ...state,
       };
     case DELETE_SCREAM:
-      let indexScream = state.screams.findIndex(scream => scream.screamId === action.payload)
-      state.screams.splice(indexScream, 1)
+      let indexScream = state.screams.findIndex(
+        (scream) => scream.screamId === action.payload
+      );
+      state.screams.splice(indexScream, 1);
       return {
-        ...state
-      }
+        ...state,
+      };
+    case POST_SCREAM:
+      return {
+        ...state,
+        screams: [action.payload, ...state.screams],
+      };
     default:
       return state;
   }

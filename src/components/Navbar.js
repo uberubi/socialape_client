@@ -8,9 +8,9 @@ import AppBar from "@material-ui/core/AppBar";
 import ToolBar from "@material-ui/core/ToolBar";
 import Button from "@material-ui/core/Button";
 // Icons
-import AddIcon from "@material-ui/icons/Add";
 import HomeIcon from "@material-ui/icons/Home";
 import Notifications from "@material-ui/icons/Notifications";
+import PostScream from "./PostScream";
 
 const Navbar = ({ authenticated }) => {
   return (
@@ -18,9 +18,7 @@ const Navbar = ({ authenticated }) => {
       <ToolBar className="nav-container">
         {authenticated ? (
           <>
-            <MyButton tip="Post a scream!">
-              <AddIcon />
-            </MyButton>
+          <PostScream />
             <Link to="/">
               <MyButton tip="Home">
                 <HomeIcon />
