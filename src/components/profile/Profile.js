@@ -59,11 +59,6 @@ const Profile = ({
               onChange={handleImageChange}
               hidden="hidden"
             />
-            {/* <Tooltip title=" Edit profile picture" placement="top">
-              <IconButton onClick={handleEditPicture} className="button">
-                <EditIcon color="primary" />
-              </IconButton>
-            </Tooltip> */}
             <MyButton
               tip="Edit profile picture"
               onClick={handleEditPicture}
