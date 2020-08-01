@@ -6,16 +6,19 @@ import { Grid } from "@material-ui/core";
 import { connect } from "react-redux";
 import { getUserData } from "../redux/actions/dataActions";
 import StaticProfile from "../components/profile/StaticProfile";
+import ScreamSkeleton from "../utils/ScreamSkeleton";
+import ProfileSkeleton from "../utils/ProfileSkeleton";
+
 const User = ({ data: { screams, loading }, getUserData, ...props }) => {
   const [profile, setProfile] = useState(null);
-  const [screamIdParam, setScreamIdParam] = useState('')
+  const [screamIdParam, setScreamIdParam] = useState("");
 
   const handle = props.match.params.handle;
-  const screamId = props.match.params.screamId
+  const screamId = props.match.params.screamId;
 
   useEffect(() => {
     if (screamId) {
-      setScreamIdParam(screamId)
+      setScreamIdParam(screamId);
     }
     getUserData(handle);
 
@@ -28,20 +31,20 @@ const User = ({ data: { screams, loading }, getUserData, ...props }) => {
   }, [handle, getUserData, screamId]);
 
   const screamsMarkup = loading ? (
-    <p>Loading data...</p>
+    <ScreamSkeleton />
   ) : screams === null ? (
     <p>No screams from this user</p>
   ) : !screamIdParam ? (
     screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
   ) : (
-    screams.map(scream => {
+    screams.map((scream) => {
       if (scream.screamId !== screamIdParam) {
-        return <Scream key={scream.screamId} scream={scream} />
+        return <Scream key={scream.screamId} scream={scream} />;
       } else {
-       return <Scream key={scream.screamId} scream={scream} openDialog />
+        return <Scream key={scream.screamId} scream={scream} openDialog />;
       }
     })
-  )
+  );
   return (
     <Grid container spacing={4}>
       <Grid item sm={8} xs={12}>

@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { Grid } from "@material-ui/core";
-
 import Scream from "../components/scream/Scream";
 import Profile from "../components/profile/Profile";
 import { connect } from "react-redux";
 import { getScreams } from "../redux/actions/dataActions";
 import PropTypes from "prop-types";
+import ScreamSkeleton from '../utils/ScreamSkeleton'
+
+
 const Home = ({ data: { screams, loading }, getScreams, ...props }) => {
   useEffect(() => {
     getScreams();
@@ -14,7 +16,7 @@ const Home = ({ data: { screams, loading }, getScreams, ...props }) => {
   const recentScreamsMarkup = !loading ? (
     screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
   ) : (
-    <p>Loading...</p>
+    <ScreamSkeleton />
   );
 
   return (
