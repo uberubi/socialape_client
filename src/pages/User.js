@@ -8,8 +8,15 @@ import { getUserData } from "../redux/actions/dataActions";
 import StaticProfile from "../components/profile/StaticProfile";
 const User = ({ data: { screams, loading }, getUserData, ...props }) => {
   const [profile, setProfile] = useState(null);
+  const [screamIdParam, setScreamIdParam] = useState('')
+
   const handle = props.match.params.handle;
+  const screamId = props.match.params.screamId
+
   useEffect(() => {
+    if (screamId) {
+      setScreamIdParam(screamId)
+    }
     getUserData(handle);
 
     axios
@@ -18,15 +25,23 @@ const User = ({ data: { screams, loading }, getUserData, ...props }) => {
         setProfile(res.data.user);
       })
       .catch((err) => console.log(err));
-  }, [handle, getUserData]);
+  }, [handle, getUserData, screamId]);
 
   const screamsMarkup = loading ? (
     <p>Loading data...</p>
   ) : screams === null ? (
     <p>No screams from this user</p>
-  ) : (
+  ) : !screamIdParam ? (
     screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
-  );
+  ) : (
+    screams.map(scream => {
+      if (scream.screamId !== screamIdParam) {
+        return <Scream key={scream.screamId} scream={scream} />
+      } else {
+       return <Scream key={scream.screamId} scream={scream} openDialog />
+      }
+    })
+  )
   return (
     <Grid container spacing={4}>
       <Grid item sm={8} xs={12}>

@@ -22,11 +22,10 @@ import axios from "axios";
 const theme = createMuiTheme(themeObject);
 
 const App = () => {
-
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState("");
   useEffect(() => {
     // const token = localStorage.FBIdToken;
-    setToken(localStorage.FBIdToken)
+    setToken(localStorage.FBIdToken);
     if (token) {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp * 1000 < Date.now()) {
@@ -38,7 +37,7 @@ const App = () => {
         store.dispatch(getUserData());
       }
     }
-  }, [token])
+  }, [token]);
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -51,6 +50,11 @@ const App = () => {
               <AuthRoute exact path="/login" component={Login} />
               <AuthRoute exact path="/signup" component={Signup} />
               <Route exact path="/users/:handle" component={User} />
+              <Route
+                  exact
+                  path="/users/:handle/scream/:screamId"
+                  component={User}
+                />
             </Switch>
           </div>
         </Router>

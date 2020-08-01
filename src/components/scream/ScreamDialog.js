@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import MyButton from "../../utils/myButton";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
-import Comments from './Comments'
-import CommentForm from './CommentForm'
+import Comments from "./Comments";
+import CommentForm from "./CommentForm";
 //MUI STUFF
 import {
   withStyles,
@@ -25,64 +25,76 @@ import LikeButton from "./LikeButton";
 
 const ScreamDialog = ({
   classes,
-  scream: {
-    screamId,
-    body,
-    createdAt,
-    likeCount,
-    commentCount,
-    userImage,
-    userHandle,
-    comments
-  },
+  scream,
   UI: { loading },
+  screamId,
+  userHandle,
+  openDialog,
+  getScream,
   ...props
 }) => {
   const [open, setOpen] = useState(false);
+  const [oldPath, setOldPath] = useState('')
+  const [newPath, setNewPath] = useState('')
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
+    const oldPathFromHistory= window.location.pathname
+    const newPathToHistory = `/users/${userHandle}/scream/${screamId}`
+    window.history.pushState(null, null, newPathToHistory)
     setOpen(true);
-    props.getScream(props.screamId);
-  };
+    setOldPath(oldPathFromHistory)
+    setNewPath(newPathToHistory)
+    getScream(screamId);
+  }, [screamId, userHandle, getScream])
+
+  useEffect(() => {
+    if (openDialog) {
+      handleOpen();
+    }
+  }, [openDialog, handleOpen]);
+
   const handleClose = () => {
+    window.history.pushState(null, null, oldPath)
     setOpen(false);
-    props.clearErrors()
+    props.clearErrors();
   };
+
+
 
   const dialogMarkup = loading ? (
     <div className={classes.spinnerDiv}>
-      <CircularProgress size={200} thickness={2}/>
+      <CircularProgress size={200} thickness={2} />
     </div>
   ) : (
     <Grid container spacing={4}>
       <Grid item sm={5}>
-        <img src={userImage} alt="Profile" className={classes.profileImage} />
+        <img src={scream.userImage} alt="Profile" className={classes.profileImage} />
       </Grid>
       <Grid item sm={7}>
         <Typography
           component={Link}
           color="primary"
           variant="h5"
-          to={`/users/${userHandle}`}
+          to={`/users/${scream.userHandle}`}
         >
-          @{userHandle}
+          @{scream.userHandle}
         </Typography>
         <hr className={classes.invisibleSeparator} />
         <Typography variant="body2" color="textSecondary">
-          {dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
+          {dayjs(scream.createdAt).format("h:mm a, MMMM DD YYYY")}
         </Typography>
         <hr className={classes.invisibleSeparator} />
-        <Typography cariant="body1">{body}</Typography>
-        <LikeButton screamId={screamId} />
-        <span>{likeCount} likes</span>
-        <MyButton tip="comments" >
+        <Typography cariant="body1">{scream.body}</Typography>
+        <LikeButton screamId={scream.screamId} />
+        <span>{scream.likeCount} likes</span>
+        <MyButton tip="comments">
           <ChatIcon color="primary" />
         </MyButton>
-        <span>{commentCount} comments</span>
+        <span>{scream.commentCount} comments</span>
       </Grid>
       <hr className={classes.visibleSeparator} />
-      <CommentForm screamId={screamId} />
-      <Comments comments={comments} />
+      <CommentForm screamId={scream.screamId} />
+      <Comments comments={scream.comments} />
     </Grid>
   );
 
@@ -132,10 +144,10 @@ const styles = (theme) => ({
     left: "90%",
   },
   spinnerDiv: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 50,
-    marginBottom: 50
-  }
+    marginBottom: 50,
+  },
 });
 
 ScreamDialog.propTypes = {
@@ -154,10 +166,87 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   getScream,
-  clearErrors
+  clearErrors,
 };
 
 export default connect(
   mapStateToProps,
   mapActionsToProps
 )(withStyles(styles)(ScreamDialog));
+
+
+// const ScreamDialog = ({
+//   classes,
+//   scream: {
+//     screamId,
+//     body,
+//     createdAt,
+//     likeCount,
+//     commentCount,
+//     userImage,
+//     userHandle,
+//     comments,
+//   },
+//   UI: { loading },
+//   screamIdFromScream,
+//   openDialog,
+//   getScream,
+//   ...props
+// }) => {
+//   const [open, setOpen] = useState(false);
+
+//   const handleOpen = useCallback(() => {
+
+//     setOpen(true);
+//     getScream(screamIdFromScream);
+//   }, [screamIdFromScream, getScream]);
+
+//   useEffect(() => {
+//     if (openDialog) {
+//       handleOpen();
+//     }
+//   }, [openDialog, handleOpen]);
+
+//   const handleClose = () => {
+//     setOpen(false);
+//     props.clearErrors();
+//   };
+
+
+
+//   const dialogMarkup = loading ? (
+//     <div className={classes.spinnerDiv}>
+//       <CircularProgress size={200} thickness={2} />
+//     </div>
+//   ) : (
+//     <Grid container spacing={4}>
+//       <Grid item sm={5}>
+//         <img src={userImage} alt="Profile" className={classes.profileImage} />
+//       </Grid>
+//       <Grid item sm={7}>
+//         <Typography
+//           component={Link}
+//           color="primary"
+//           variant="h5"
+//           to={`/users/${userHandle}`}
+//         >
+//           @{userHandle}
+//         </Typography>
+//         <hr className={classes.invisibleSeparator} />
+//         <Typography variant="body2" color="textSecondary">
+//           {dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
+//         </Typography>
+//         <hr className={classes.invisibleSeparator} />
+//         <Typography cariant="body1">{body}</Typography>
+//         <LikeButton screamId={screamId} />
+//         <span>{likeCount} likes</span>
+//         <MyButton tip="comments">
+//           <ChatIcon color="primary" />
+//         </MyButton>
+//         <span>{commentCount} comments</span>
+//       </Grid>
+//       <hr className={classes.visibleSeparator} />
+//       <CommentForm screamId={screamId} />
+//       <Comments comments={comments} />
+//     </Grid>
+//   );
